@@ -1,35 +1,25 @@
 #!/usr/bin/env python3
 import sys
 
-current_word = None
-current_count = 0
-word = None
-word_id = 0
-
+current_word= None
+word_id= 0 
 # Input comes from standard input (stdin)
 for line in sys.stdin:
     # Parse the input we got from mapper.py
-    line = line.strip()
-
-    # Split the line into word and count, which are separated by a tab
-    word, count = line.split('\t', 1)
-
-    # Convert count (currently a string) to int
+    line= line.strip()
+    # Split the line into word
     try:
-        count = int(count)
+        word,= line.split(' ')
     except ValueError:
         continue
-
-    
-    if current_word == word:
-        current_count += count
-    else:
-        if current_word:
-            # Write result to standard output (stdout)
-            print(f'{current_word}\t{word_id}\t{current_count}')
-            word_id += 1
-        current_count = count
-        current_word = word
-
+    # Check if this word is different from the last one processed
+    if word != current_word:
+        # Output the word along with its unique ID
+        print(f'{word}\t{word_id}')
+        word_id+= 1  # Increment word_id for the next unique word
+        current_word= word  # Update current_word to the new word
+# if block to cater last word
 if current_word == word:
-    print(f'{current_word}\t{word_id}\t{current_count}')
+    print(f'{current_word}\t{word_id}')
+
+
