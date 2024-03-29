@@ -1,7 +1,3 @@
-
-
-
-
 #!/usr/bin/env python3
 import sys
 import re
@@ -11,15 +7,14 @@ stopwords= set(["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "yo
 
 # Input comes from standard input (stdin)
 for line in sys.stdin:
-    id, title, section_title, section_text= line.strip().split(',')
-
+    columns= line.strip().split(',')
+    section_text= columns[3] if len(columns) > 3 else ""
     # Remove punctuation using regex, considering only word characters
-    words = re.findall(r'\b\w+\b', section_text)
-
+    words= re.findall(r'\b\w+\b', section_text)
     # Iterate over words
     for word in words:
         # Convert to lower case
-        word = word.lower()
+        word= word.lower()
         # Skip stopwords
         if word not in stopwords:
             # Emit the word with a count of 1
