@@ -9,7 +9,7 @@ stopwords= set(["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "yo
 for line in sys.stdin:
     columns= line.strip().split(',')
     section_text= columns[3] if len(columns) > 3 else ""
-    # Remove punctuation using regex, considering only word characters
+    # Remove punctuation, considering only word characters
     words= re.findall(r'\b\w+\b', section_text)
     # Iterate over words
     for word in words:
