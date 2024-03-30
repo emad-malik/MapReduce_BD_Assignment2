@@ -9,7 +9,7 @@ for line in sys.stdin:
     columns= line.strip().split(',')
     article_id= columns[0]  # Extract the ARTICLE_ID
     section_text= columns[3] if len(columns) > 3 else ""
-    # Remove punctuation using regex, considering only alphabetic characters
+    # Remove punctuation, considering only alphabetic characters
     words= re.findall(r'\b[a-zA-Z]+\b', section_text)
     # Iterate over words
     for word in words:
