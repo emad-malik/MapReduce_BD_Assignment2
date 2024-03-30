@@ -13,6 +13,6 @@ vocabulary= {}
 for word, unique_id in word_enumeration.items():
     document_count_value= document_count.get(word, 0)  
     vocabulary[word]= {'ID': unique_id, 'DocumentCount': document_count_value}
-
-# for word, info in list(vocabulary.items())[:5]: 
-#     print(f'ID: {info["ID"]}, Document Count: {info["DocumentCount"]}')
+# this output gets saved in local directory
+for word, info in list(vocabulary.items()): 
+    print(f'ID: {info["ID"]}, Document Count: {info["DocumentCount"]}')
