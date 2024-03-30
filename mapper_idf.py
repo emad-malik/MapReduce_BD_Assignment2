@@ -18,23 +18,17 @@ stopwords = set([
     "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very",
     "s", "t", "can", "will", "just", "don", "should", "now"
 ])
-
 # Input comes from standard input (stdin)
 for line in sys.stdin:
-    columns = line.strip().split(',')
-    article_id = columns[0]  # Extract the ARTICLE_ID
-    section_text = columns[3] if len(columns) > 3 else ""
-
+    columns= line.strip().split(',')
+    article_id= columns[0]  # Extract the ARTICLE_ID
+    section_text= columns[3] if len(columns) > 3 else ""
     # Remove punctuation using regex, considering only alphabetic characters
-    words = re.findall(r'\b[a-zA-Z]+\b', section_text)
-
+    words= re.findall(r'\b[a-zA-Z]+\b', section_text)
     # Iterate over words
     for word in words:
         # Convert to lower case
-        word = word.lower()
-
+        word= word.lower()
         # Skip stopwords
         if word not in stopwords:
-            # Emit the word along with the ARTICLE_ID
-            # No need to emit a count here since we're just counting documents per term
             print(f'{word}\t{article_id}')
