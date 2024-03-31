@@ -1,9 +1,8 @@
-# 22I2072_BD_Assignment2
 # Members:
 Muhammad Subhan 22i-2024
 Hamza Asad   22i-1908
 Emad Iqbal 22i-2072
-
+# Ojective:
 The objective of this project is to develop a basic search engine using Apache Hadoop's MapReduce framework. The project aims to address the challenges of handling large amounts of textual data efficiently while ensuring low-latency responses to user queries. The report provides a comprehensive overview of the development process, including data preprocessing, indexing, and query processing, along with the technologies used and the rationale behind design decisions.
 # Libraries used:
 import sys
@@ -27,88 +26,99 @@ Search Engine Development utilizing MapReduce
     8. return out_data: Returns the out_data dictionary containing the parsed data from the file.
     9. word_enumeration = load_reducer_output('en_out.txt'): Calls the load_reducer_output function with the file path 'en_out.txt' and stores the returned dictionary in word_enumeration.
     10. document_count = load_reducer_output('idf_out.txt'): Calls the load_reducer_output function with the file path 'idf_out.txt' and stores the returned dictionary in document_count.
-# Merging into a single structure:
+### Merging into a single structure:
 vocabulary = {}: Initializes an empty dictionary vocabulary to store the merged data.
 for word, unique_id in word_enumeration.items():: Iterates over each key-value pair in the word_enumeration dictionary.
 document_count_value = document_count.get(word, 0): Retrieves the value corresponding to the current word from the document_count dictionary. If the word is not found, it defaults to 0.
 vocabulary[word] = {'ID': unique_id, 'DocumentCount': document_count_value}: Creates a new entry in the vocabulary dictionary with the word as the key and a dictionary containing 'ID' (from word_enumeration) and 'DocumentCount' (from document_count) as the value.
-# Printing the output:
+### Printing the output:
 for word, info in list(vocabulary.items()):: Iterates over each key-value pair in the vocabulary dictionary.
 print(f'ID: {info["ID"]}, Document Count: {info["DocumentCount"]}'): Prints the 'ID' and 'DocumentCount' associated with each word in the vocabulary dictionary.
 Overall, this code parses data from two files, combines the information into a single structure (vocabulary), and then prints the merged data.
 
+![image](https://github.com/emad-malik/MapReduce_BD_Assignment2/assets/112495807/2a7be125-09e8-4303-99c9-36d44537d0e7)
+
+
   # 2. Enumeration
-  # • Mapper – Enumeration
-# Input Reading:
+  #### • Mapper – Enumeration
+#### Input Reading:
 Reads input from standard input (stdin), typically in the form of text data.
-# Text Processing:
+#### Text Processing:
 Extracts words from the input text using a regular expression.
 Converts each word to lowercase and filters out stopwords.
-# Output Emission:
+#### Output Emission:
 Emits each significant word along with a count of 1 as a key-value pair.
 The key is the word, and the value is 1, indicating that this word has been encountered once.
 Outputs key-value pairs to standard output (stdout), separated by a tab character.
   # • Reducer- enumeration
 The reducer receives the key-value pairs emitted by the mapper and performs aggregation or computation based on the keys. 
 In the provided code:
-# Input Reading:
+#### Input Reading:
 Reads key-value pairs from standard input (stdin), typically produced by the mapper.
-# Aggregation:
+#### Aggregation:
 Groups together key-value pairs with the same key.
 Computes the total count for each unique key (word) by summing up the values associated with it.
-# Output Emission:
+#### Output Emission:
 Emits the aggregated results, usually as key-value pairs.
 The key is typically the word, and the value is the total count of occurrences of that word across the input data.
 Outputs the final results to standard output (stdout), ready for further processing or analysis.
 In summary, the reducer aggregates the intermediate results produced by the mapper, performing any necessary computation or summarization, and produces the final output data. In the context of word counting or enumeration, the reducer would produce a list of unique words along with their respective counts or identifiers.
+
+![image](https://github.com/emad-malik/MapReduce_BD_Assignment2/assets/112495807/a1a74edd-a756-4f53-ba4d-c2c21e58d607)
+
+
   # 3. IDF
-  # • Mapper – IDF
+  ### • Mapper – IDF
 Input Reading: Reads input lines from standard input (stdin), typically produced by another script or process.
 Parsing: Parses each input line into a term and a document ID.
 Term Counting: Counts the occurrences of each term across documents by maintaining a set of document IDs for each term.
 Output Emission: Emits key-value pairs where the key is the term and the value is the count of unique documents containing that term.
-  # • Reducer – IDF
+  ### • Reducer – IDF
 Input Reading: Reads key-value pairs from standard input (stdin), typically produced by the Mapper.
 Aggregation: Aggregates the counts of documents containing each term.
 IDF Calculation: Calculates the IDF (Inverse Document Frequency) for each term using the formula :
 idf = 1 + log(total_documents / (1 + doc_count)).
 Output Emission: Emits key-value pairs where the key is the term and the value is its IDF.
 In summary, the Reducer calculates the IDF for each term based on the document frequencies (DF) obtained from the Mapper's output.
+
+![image](https://github.com/emad-malik/MapReduce_BD_Assignment2/assets/112495807/3bc494ec-3e5c-4971-a133-5f17c9a8a175)
+
+
   # 4. Indexer
-  # • Mapper – Indexer
-# Function Definition: load_vocabulary:
+  ### • Mapper – Indexer
+#### Function Definition: load_vocabulary:
 This function reads a vocabulary file (vocab_out.txt) and creates a dictionary containing the unique IDs and document counts for each term.
 It returns the vocabulary dictionary.
-# Loading Vocabulary:
+#### Loading Vocabulary:
 The load_vocabulary function is called to load the vocabulary from the vocab_out.txt file.
-# Function Definition: calculate_normalized_tf:
+#### Function Definition: calculate_normalized_tf:
 This function calculates the normalized term frequency (TF) for each term in a given text.
 It returns a dictionary where keys are terms and values are their normalized TF scores.
-# Reading Input:
+#### Reading Input:
 The script reads input from standard input (stdin), which typically comes from another process or file.
 Each line is split into columns using a comma (,) as the delimiter.
 The article ID and text section are extracted from the columns.
-# Processing Text:
+#### Processing Text:
 The text section is cleaned by removing punctuation and splitting it into individual words using regular expressions.
 Each word is converted to lowercase and checked against the stopwords list.
 If the word is not a stopword, its normalized TF score is calculated using calculate_normalized_tf.
-# Output:
+#### Output:
 For each term in the text with a non-zero TF score, the corresponding term ID and article ID are printed to stdout, along with the TF score.
 This script essentially preprocesses text data by calculating the TF scores for each term in each article, considering only non-stopwords. The TF scores are normalized to handle sparse vectors, and the results are emitted for further processing, such as calculating TF-IDF values.
-  # • Reducer -indexer
+  ### • Reducer -indexer
 This script is a Reducer in a MapReduce job for calculating TF-IDF (Term Frequency-Inverse Document Frequency). 
-# 1. Vocabulary Loading Function (`load_vocabulary`): 
+#### 1. Vocabulary Loading Function (`load_vocabulary`): 
    - This function loads the vocabulary from a text file.
    - It opens the specified file (`vocabulary_path`) and reads it line by line.
    - Each line is stripped of leading and trailing whitespaces and then split by the tab character (`'\t'`) to extract the unique ID and document count.
    - These extracted values are stored in a dictionary called `vocabulary`, where the unique ID serves as the key, and a dictionary containing the document count is the value.
    - The function returns the loaded vocabulary dictionary.
-# 2. Mapper Output Parsing Function (`read_mapper_output`): 
+#### 2. Mapper Output Parsing Function (`read_mapper_output`): 
    - This function parses the output generated by the Mapper.
    - It takes a file object (`file`) and an optional separator (defaulting to `'\t'`).
    - It iterates over each line in the file, stripping trailing whitespace and splitting the line by the specified separator, resulting in a key-value pair.
    - It yields each key-value pair as a tuple.
-# 3. Main Function:
+#### 3. Main Function:
    - The `main` function is the entry point of the Reducer script.
    - It initializes an empty dictionary called `term_frequencies` to store term frequencies.
    - It processes each line output by the Mapper using the `read_mapper_output` function.
