@@ -28,7 +28,7 @@ def main(separator= '\t'):
         if term_id not in term_frequencies:
             term_frequencies[term_id]= {}
         if article_id not in term_frequencies[term_id]:
-            # compute tf if article_id is not in dict
+            # compute tf if article_id is in dict
             term_frequencies[term_id][article_id]= 0
         term_frequencies[term_id][article_id]+= tf
     total_documents= sum(vocabulary.values())
